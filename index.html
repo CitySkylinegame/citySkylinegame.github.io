@@ -1,73 +1,682 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Game Studio</title>
+
+    <title>City Skyline Simulator</title>
+
+    <meta name="description" content="City Skyline Simulator is a city building and destruction simulation game where you can build, experiment, and destroy your own city.">
 
     <style>
-        body {
+        * {
             margin: 0;
-            font-family: Arial, sans-serif;
-            background: #10131a;
-            color: white;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top, #19253b 0%, #0a0f18 45%, #05080d 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* NAVBAR */
+
+        nav {
+            width: 100%;
+            padding: 18px 8%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(7, 12, 20, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+        }
+
+        .logo span {
+            color: #38bdf8;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 26px;
+        }
+
+        .nav-links a {
+            color: #c9d4e3;
+            font-size: 15px;
+            transition: 0.25s;
+        }
+
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 88vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.13);
+            filter: blur(110px);
+            top: -170px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 9px 15px;
+            border-radius: 999px;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            background: rgba(56, 189, 248, 0.08);
+            color: #7dd3fc;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(48px, 8vw, 88px);
+            line-height: 1;
+            font-weight: 900;
+            margin-bottom: 25px;
+            letter-spacing: -3px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #38bdf8, #60a5fa, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #aab7c7;
+            font-size: 19px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            margin-top: 35px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 15px 26px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.25s;
+        }
+
+        .btn-primary {
+            color: #06101a;
+            background: linear-gradient(90deg, #38bdf8, #60a5fa);
+            box-shadow: 0 10px 35px rgba(56, 189, 248, 0.22);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 45px rgba(56, 189, 248, 0.35);
+        }
+
+        .btn-secondary {
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .btn-secondary:hover {
+            border-color: #38bdf8;
+            color: #7dd3fc;
+            transform: translateY(-3px);
+        }
+
+        /* SECTIONS */
+
+        section {
+            padding: 90px 8%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 55px;
+        }
+
+        .section-title span {
+            color: #38bdf8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .section-title h2 {
+            font-size: 40px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            max-width: 650px;
+            margin: 0 auto;
+            color: #8f9dad;
+            line-height: 1.7;
+        }
+
+        /* FEATURES */
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .feature-card {
+            background: linear-gradient(
+                145deg,
+                rgba(255, 255, 255, 0.055),
+                rgba(255, 255, 255, 0.02)
+            );
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 30px;
+            transition: 0.25s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 28px;
+            margin-bottom: 22px;
+        }
+
+        .feature-card h3 {
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #8e9bab;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* ABOUT */
+
+        .about-box {
+            max-width: 1100px;
+            margin: auto;
+            padding: 55px;
+            border-radius: 22px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(56, 189, 248, 0.09),
+                    rgba(99, 102, 241, 0.06)
+                );
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .about-box h2 {
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .about-box p {
+            color: #a4b0bf;
+            line-height: 1.9;
+            font-size: 17px;
+        }
+
+        /* CTA */
+
+        .cta {
             text-align: center;
         }
 
-        header {
-            padding: 80px 20px;
-            background: #161b22;
+        .cta-box {
+            max-width: 1000px;
+            margin: auto;
+            padding: 65px 25px;
+            border-radius: 24px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(56, 189, 248, 0.12),
+                    rgba(79, 70, 229, 0.12)
+                );
+
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        h1 {
-            font-size: 48px;
-            margin-bottom: 10px;
+        .cta-box h2 {
+            font-size: 42px;
+            margin-bottom: 17px;
         }
 
-        p {
-            color: #b8c0cc;
-            font-size: 18px;
+        .cta-box p {
+            max-width: 620px;
+            margin: 0 auto 25px auto;
+            color: #a1adbc;
+            line-height: 1.7;
         }
 
-        .button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 14px 28px;
-            background: #238636;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-        }
-
-        .button:hover {
-            background: #2ea043;
-        }
+        /* FOOTER */
 
         footer {
-            margin-top: 80px;
-            padding: 30px;
-            color: #777;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 35px 8%;
+            background: #05080d;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .footer-left {
+            color: #788494;
+            font-size: 14px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: #8f9bab;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: #38bdf8;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .about-box {
+                padding: 35px 25px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            nav {
+                padding: 16px 20px;
+            }
+
+            section {
+                padding: 70px 20px;
+            }
+
+            .hero {
+                padding-top: 60px;
+            }
+
+            .hero h1 {
+                letter-spacing: -1px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .section-title h2 {
+                font-size: 31px;
+            }
+
+            .cta-box h2 {
+                font-size: 31px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<header>
-    <h1>My Game Studio</h1>
+<nav>
+    <div class="logo">
+        City Skyline <span>Simulator</span>
+    </div>
 
-    <p>
-        Welcome to my official game development website.
-    </p>
+    <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+    </div>
+</nav>
 
-    <a class="button" href="#">
-        My Games
-    </a>
+
+<header class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="tag">
+            CITY BUILDING & DESTRUCTION SIMULATOR
+        </div>
+
+        <h1>
+            Build Your City.<br>
+            <span>Then Destroy It.</span>
+        </h1>
+
+        <p>
+            Create your own city, build roads and structures, experiment with
+            urban development, and unleash powerful destruction when you are ready.
+            City Skyline Simulator gives you the freedom to build, test, and
+            reshape your world.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#features" class="btn btn-primary">
+                Explore The Game
+            </a>
+
+            <a href="privacy-policy.html" class="btn btn-secondary">
+                Privacy Policy
+            </a>
+
+        </div>
+
+    </div>
+
 </header>
 
+
+<section id="features">
+
+    <div class="section-title">
+
+        <span>Gameplay</span>
+
+        <h2>
+            Create. Experiment. Destroy.
+        </h2>
+
+        <p>
+            Build your city your way and experience a sandbox simulation where
+            construction and destruction are both part of the gameplay.
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🏙️
+            </div>
+
+            <h3>
+                Build Your City
+            </h3>
+
+            <p>
+                Create roads, place buildings, expand urban areas, and shape
+                your own city from the ground up.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                ☄️
+            </div>
+
+            <h3>
+                Powerful Destruction
+            </h3>
+
+            <p>
+                Experiment with destructive events and powerful weapons to see
+                how your city reacts to large-scale destruction.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🎮
+            </div>
+
+            <h3>
+                Sandbox Freedom
+            </h3>
+
+            <p>
+                Play at your own pace. Build, experiment, destroy, rebuild,
+                and create new scenarios whenever you want.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🚗
+            </div>
+
+            <h3>
+                Living Environment
+            </h3>
+
+            <p>
+                Experience a city environment designed to feel active while
+                you expand and modify your urban world.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🧪
+            </div>
+
+            <h3>
+                Experiment Freely
+            </h3>
+
+            <p>
+                Test different city layouts and destruction scenarios to discover
+                new outcomes every time you play.
+            </p>
+
+        </div>
+
+
+        <div class="feature-card">
+
+            <div class="feature-icon">
+                🔧
+            </div>
+
+            <h3>
+                Continuous Development
+            </h3>
+
+            <p>
+                City Skyline Simulator continues to evolve with gameplay
+                improvements, optimization, and new features.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<section id="about">
+
+    <div class="about-box">
+
+        <h2>
+            About City Skyline Simulator
+        </h2>
+
+        <p>
+            City Skyline Simulator is a sandbox-style city building and
+            destruction simulation game designed for players who enjoy creativity,
+            experimentation, and large-scale destruction.
+        </p>
+
+        <br>
+
+        <p>
+            Build your own urban environment, expand your city, and then test
+            what happens when powerful destructive events are unleashed.
+            Whether you prefer creating detailed cities or experimenting with
+            destruction, the game gives you the freedom to choose how you play.
+        </p>
+
+    </div>
+
+</section>
+
+
+<section class="cta">
+
+    <div class="cta-box">
+
+        <h2>
+            Your City. Your Rules.
+        </h2>
+
+        <p>
+            Build it, expand it, experiment with it, and destroy it.
+            Every city can become a completely different simulation.
+        </p>
+
+        <a href="#home" class="btn btn-primary">
+            Back To Top
+        </a>
+
+    </div>
+
+</section>
+
+
 <footer>
-    © 2026 My Game Studio
+
+    <div class="footer-content">
+
+        <div class="footer-left">
+            © 2026 City Skyline Simulator. All rights reserved.
+        </div>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="privacy-policy.html">
+                Privacy Policy
+            </a>
+
+            <a href="mailto:pricilia.rossa78@gmail.com">
+                Contact
+            </a>
+
+        </div>
+
+    </div>
+
 </footer>
 
 </body>
 </html>
+```
